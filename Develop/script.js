@@ -26,6 +26,8 @@ const hr14el = $('#hour-14')
 const hr15el = $('#hour-15')
 const hr16el = $('#hour-16')
 const hr17el = $('#hour-17')
+const buttonsEl = document.querySelectorAll('.btn')
+const textAreaEls = document.querySelectorAll('textarea').val
 
 
 // creating switch to run parse out the current hour and set the class state.
@@ -225,9 +227,11 @@ function retrieveToDos() {
 
 
 // creating the object to be stored and turing it into a JSON file 
-function storeToDos() {
+function storeToDos(event) {
+
+ 
   let hourEl = 3
-  let textInput = 0
+  let textInput = event.currentTarget.textAreaEls
   const todoItem = {
 
     hour: hourEl,
@@ -236,4 +240,19 @@ function storeToDos() {
   }
 
   localStorage.setItem("todoItemsArray", JSON.stringify(todoItem))
+}
+
+
+
+
+
+
+
+buttonsEl.forEach(function(currentBtn){
+  currentBtn.addEventListener('click', handleEvent)
+})
+
+function storeToDos () {
+
+  console.log(textAreaEls)
 }
