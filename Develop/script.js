@@ -29,6 +29,8 @@ const hr16el = $('#hour-16')
 const hr17el = $('#hour-17')
 const buttonsEl = document.querySelectorAll('.btn')
 const textAreaEls = document.querySelectorAll('textarea').val
+const clearFormBtn = $('#clear')
+
 
 
 // creating switch to run parse out the current hour and set the class state.
@@ -52,7 +54,7 @@ setInterval(function currentHour() {
       break;
 
     case 9:
-      console.log('hour 9')
+      // console.log('hour 9')
       hr9el.addClass('present')
       hr10el.addClass('future')
       hr11el.addClass('future')
@@ -65,7 +67,7 @@ setInterval(function currentHour() {
       break;
 
     case 10:
-      console.log('hour 10')
+      // console.log('hour 10')
       hr9el.addClass('past')
       hr10el.addClass('present')
       hr11el.addClass('future')
@@ -78,7 +80,7 @@ setInterval(function currentHour() {
       break;
 
     case 11:
-      console.log('hour 11')
+      // console.log('hour 11')
       hr9el.addClass('past')
       hr10el.addClass('past')
       hr11el.addClass('present')
@@ -91,7 +93,7 @@ setInterval(function currentHour() {
       break;
 
     case 12:
-      console.log('hour 12')
+      // console.log('hour 12')
       hr9el.addClass('past')
       hr10el.addClass('past')
       hr11el.addClass('past')
@@ -104,7 +106,7 @@ setInterval(function currentHour() {
       break;
 
     case 13:
-      console.log('hour 13')
+      // console.log('hour 13')
       hr9el.addClass('past')
       hr10el.addClass('past')
       hr11el.addClass('past')
@@ -118,7 +120,7 @@ setInterval(function currentHour() {
       break;
 
     case 14:
-      console.log('hour 14')
+      // console.log('hour 14')
       hr9el.addClass('past')
       hr10el.addClass('past')
       hr11el.addClass('past')
@@ -157,7 +159,7 @@ setInterval(function currentHour() {
       break;
 
     case 17:
-      console.log('hour 17')
+      // console.log('hour 17')
       hr9el.addClass('past')
       hr10el.addClass('past')
       hr11el.addClass('past')
@@ -189,91 +191,84 @@ setInterval(function currentHour() {
 // pulling the currently saved to-do object from local storage
 function retrieveToDos() {
   let currentToDos = JSON.parse(localStorage.getItem('todoItemsArray'))
-}
+  console.log(currentToDos)
+
+  
+  for (let i = 0; i < currentToDos.length; i++) {
+    let hour = currentToDos[i].hour
+    let text = currentToDos[i].text
+    console.log(hour)
+    console.log(text)
+    let hourEl = document.getElementById(hour)
+    hourEl.children[1].value = text
 
 
 
+  }
 
 
-// TODO: Add a listener for click events on the save button. This code should
-// use the id in the containing time-block as a key to save the user input in
-// local storage. HINT: What does `this` reference in the click listener
-// function? How can DOM traversal be used to get the "hour-x" id of the
-// time-block containing the button that was clicked? How might the id be
-// useful when saving the description in local storage?
-//
-// TODO: Add code to get any user input that was saved in localStorage and set
-// the values of the corresponding textarea elements. HINT: How can the id
-// attribute of each time-block be used to do this?
-
-
-
-
-
-
-// localStorage.setItem("todoItemsArray", JSON.stringify(todoItem))
-
-
-
-
-
-
-// pulling the currently saved to-do object from local storage
-function retrieveToDos() {
-  let currentToDos = JSON.parse(localStorage.getItem('todoItemsArray'))
 }
 
 
 // creating the object to be stored and turing it into a JSON file 
 function storeToDos(event) {
 
+  // let's used to parse out the data from the individual div elements
 
-  // let hourEl = 3
+  let hourEl = event.target.parentElement.parentElement.getAttribute('id')
+  let textEl = event.target.parentElement.parentElement.children[1].value
 
-  const todoItem = {
+  // pulling current stored data, if no data found an empty array is created
+  let todoArray = JSON.parse(localStorage.getItem('todoItemsArray')) || []
+  
 
-    hour: hourEl,
-    text: textInput
+// using a constructor to create each hour's object to be store in the array
+
+  function TodoItem(hour, text) {
+
+    this.hour = hour;
+    this.text = text;
 
   }
 
-  localStorage.setItem("todoItemsArray", JSON.stringify(todoItem))
+  const todoItem = new TodoItem(hourEl, textEl)
+
+
+  // adding the newly created object to the array
+  console.log(todoItem)
+  todoArray.push(todoItem)
+
+  localStorage.setItem("todoItemsArray", JSON.stringify(todoArray))
 }
 
 
 
 
 
-
+// using the forEach method so one event listener can handle all the buttons on the page 
+// this was done to limit redundancy of the code and to add some future expandability
 
 buttonsEl.forEach(function (currentBtn) {
   currentBtn.addEventListener('click', storeToDos)
 })
 
-function storeToDos(event) {
-  let hourEl = event.target.parentElement.parentElement.getAttribute('id')
-  let textEl = event.target.parentElement.parentElement.children[1].value
 
-  const todoArray = JSON.parse(localStorage.getItem('todoItemsArray'))
+//  calling the stored todo's on page load
+retrieveToDos()
 
 
+// using clear form button to remove stored data and wipe all displayed data
 
-  const todoItem = {
+clearFormBtn.on('click',function clearLocal() {
 
-    hour: hourEl,
-    text: textEl
-
-  }
-
-  console.log(todoItem);
-
-  // todoArray.push(todoItem)
-
-  localStorage.setItem("todoItemsArray", JSON.stringify(todoArray))
-
-  console.log(event.target.parentElement.parentElement.children[1].value)
-  console.log(hourEl)
-
-  return
-};
-
+  localStorage.clear()
+  hr9el.children("textarea").val("")
+  hr10el.children("textarea").val("")
+  hr11el.children("textarea").val("")
+  hr12el.children("textarea").val("")
+  hr13el.children("textarea").val("")
+  hr14el.children("textarea").val("")
+  hr15el.children("textarea").val("")
+  hr16el.children("textarea").val("")
+  hr17el.children("textarea").val("")
+})
