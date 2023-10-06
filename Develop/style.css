@@ -57,3 +57,22 @@ textarea {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
 }
+
+/* mirroring "saveBtn" for the clear btn for page cohesion  */
+
+#clear {
+  border-left: 1px solid black;
+  border-radius: 10px;
+  background-color: #06aed5;
+  color: white;
+  height: 2rem;
+  width: 8rem;
+  font-weight: 600;
+}
+
+#clear :hover {
+  font-size: 16px;
+  transition: all 0.15s ease-in-out;
+  color: black;
+  font-weight: bolder;
+}
