@@ -6,5 +6,7 @@ The code uses a single event listener for all of the save buttons. This along wi
 
 this project uses HTML, CSS, BootStrap, JavaScript, DayJS, and JQuery.
 
+Test the finished product: https://breakfastsandwich.github.io/schedulize/
+
 
 ![Alt text](image.png)
