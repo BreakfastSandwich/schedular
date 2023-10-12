@@ -27,7 +27,7 @@ const hr14el = $('#hour-14')
 const hr15el = $('#hour-15')
 const hr16el = $('#hour-16')
 const hr17el = $('#hour-17')
-const buttonsEl = document.querySelectorAll('.btn')
+const buttonsEl = document.querySelectorAll('.save')
 const textAreaEls = document.querySelectorAll('textarea').val
 const clearFormBtn = $('#clear')
 
@@ -190,7 +190,7 @@ setInterval(function currentHour() {
 
 // pulling the currently saved to-do object from local storage
 function retrieveToDos() {
-  let currentToDos = JSON.parse(localStorage.getItem('todoItemsArray'))
+  let currentToDos = JSON.parse(localStorage.getItem('todoItemsArray')) || []
   console.log(currentToDos)
 
   
@@ -213,10 +213,19 @@ function retrieveToDos() {
 // creating the object to be stored and turing it into a JSON file 
 function storeToDos(event) {
 
-  // let's used to parse out the data from the individual div elements
+  let hourEl;
+  let textEl; 
 
-  let hourEl = event.target.parentElement.parentElement.getAttribute('id')
-  let textEl = event.target.parentElement.parentElement.children[1].value
+  // let's used to parse out the data from the individual div elements
+if (!event.target.parentElement.getAttribute('id')){
+  hourEl =  event.target.parentElement.parentElement.getAttribute('id')
+  textEl = event.target.parentElement.parentElement.children[1].value
+ 
+} else {
+  hourEl = event.target.parentElement.getAttribute('id')
+  textEl = event.target.parentElement.children[1].value
+ 
+}
 
   // pulling current stored data, if no data found an empty array is created
   let todoArray = JSON.parse(localStorage.getItem('todoItemsArray')) || []
@@ -250,6 +259,7 @@ function storeToDos(event) {
 
 buttonsEl.forEach(function (currentBtn) {
   currentBtn.addEventListener('click', storeToDos)
+  // console.log(currentBtn)
 })
 
 
@@ -260,7 +270,7 @@ retrieveToDos()
 // using clear form button to remove stored data and wipe all displayed data
 
 clearFormBtn.on('click',function clearLocal() {
-
+console.log('taco')
   localStorage.clear()
   hr9el.children("textarea").val("")
   hr10el.children("textarea").val("")
